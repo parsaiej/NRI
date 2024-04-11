@@ -189,7 +189,7 @@ endif ()
 # VK
 if (NRI_ENABLE_VK_SUPPORT)
     message ("NRI adding backend: VK")
-    set (COMPILE_DEFINITIONS ${COMPILE_DEFINITIONS} NRI_USE_VULKAN=1)
+    set (COMPILE_DEFINITIONS ${COMPILE_DEFINITIONS} NRI_USE_VULKAN=1 VK_ENABLE_BETA_EXTENSIONS)
 
     file (GLOB VK_SOURCE "Source/VK/*.cpp" "Source/VK/*.h" "Source/VK/*.hpp")
     source_group ("" FILES ${VK_SOURCE})
