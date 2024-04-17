@@ -415,6 +415,7 @@ Result DeviceVK::Create(const DeviceCreationDesc& deviceCreationDesc, const Devi
             m_VK.EnumeratePhysicalDeviceGroups(m_Instance, &deviceGroupNum, nullptr);
 
             VkPhysicalDeviceGroupProperties* deviceGroups = STACK_ALLOC(VkPhysicalDeviceGroupProperties, deviceGroupNum);
+            deviceGroups->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GROUP_PROPERTIES;
             VkResult result = m_VK.EnumeratePhysicalDeviceGroups(m_Instance, &deviceGroupNum, deviceGroups);
             RETURN_ON_FAILURE(this, result == VK_SUCCESS, GetReturnCode(result), "vkEnumeratePhysicalDevices returned %d", (int32_t)result);
 
@@ -493,6 +494,16 @@ Result DeviceVK::Create(const DeviceCreationDesc& deviceCreationDesc, const Devi
     VkPhysicalDevicePortabilitySubsetFeaturesKHR portabilitySubsetFeatures = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PORTABILITY_SUBSET_FEATURES_KHR};
     if (IsExtensionSupported(VK_KHR_PORTABILITY_SUBSET_EXTENSION_NAME, desiredDeviceExts)) {
         APPEND_EXT(portabilitySubsetFeatures);
+    }
+
+    VkPhysicalDeviceSynchronization2FeaturesKHR synchronization2Feature = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SYNCHRONIZATION_2_FEATURES_KHR};
+    if (IsExtensionSupported(VK_KHR_SYNCHRONIZATION_2_EXTENSION_NAME, desiredDeviceExts)) {
+        APPEND_EXT(synchronization2Feature);
+    }
+
+    VkPhysicalDeviceDynamicRenderingFeaturesKHR dynamicRenderingFeature = {VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DYNAMIC_RENDERING_FEATURES_KHR};
+    if (IsExtensionSupported(VK_KHR_DYNAMIC_RENDERING_EXTENSION_NAME, desiredDeviceExts)) {
+        APPEND_EXT(dynamicRenderingFeature);
     }
 #endif
 
